@@ -16,7 +16,8 @@ const el = id => document.getElementById(id);
 const digits = value => String(value).padStart(6, '0');
 export class AppController {
   constructor() {
-    this.practiceStart = new URLSearchParams(window.location.search).get('practice') === '6' ? 5 : 0;
+    const practiceWave = new URLSearchParams(window.location.search).get('practice');
+    this.practiceStart = practiceWave === '8' ? 7 : practiceWave === '6' ? 5 : 0;
     this.runCounter = 0; this.lastAutoSave = 0; this.newMedals = [];
     this.state = 'boot'; this.sim = null; this.clock = new Clock(); this.audio = new AudioMixer();
     this.renderer = new CanvasRenderer(el('sea'), config.world);
@@ -88,7 +89,7 @@ export class AppController {
     this.state = 'home'; this.sim = null; this.input.setEnabled(false); this.clock.reset(); this.renderer.clearEffects(); this.lastHud = '';
     el('pause').disabled = true; el('wave-notice').hidden = true;
     const save = !this.practiceStart && this.profile.checkpoint;
-    this.panel(`<div class="eyebrow">炸潜艇 · 连爆挑战</div><h2>深海猎杀</h2><p class="gold">瞄准潜艇，投弹连爆。</p><p>炸掉一艘，带上旁边的。<br>试试一颗炸弹能炸几艘？</p>${save ? `<button class="primary" data-action="continue">继续上次 · 第 ${save.state.wave + 1} 波 →</button><button class="secondary" data-action="start">重新开始</button>` : '<button class="primary" data-action="start">开炸！ &nbsp; →</button>'}<div class="menu-grid"><button class="minor" data-action="help">怎么玩？</button><button class="minor" data-action="history">历史成绩</button><button class="minor" data-action="medals">我的勋章</button><button class="minor" data-action="author">关注作者 / 反馈</button></div><p class="tiny">${this.practiceStart ? '后五波练习 · 第六波起步 · 不计正式纪录' : `你的最高分 ${digits(this.profile.bestScore)} · 一共十波`}</p>`);
+    this.panel(`<div class="eyebrow">炸潜艇 · 连爆挑战</div><h2>深海猎杀</h2><p class="gold">瞄准潜艇，投弹连爆。</p><p>炸掉一艘，带上旁边的。<br>试试一颗炸弹能炸几艘？</p>${save ? `<button class="primary" data-action="continue">继续上次 · 第 ${save.state.wave + 1} 波 →</button><button class="secondary" data-action="start">重新开始</button>` : '<button class="primary" data-action="start">开炸！ &nbsp; →</button>'}<div class="menu-grid"><button class="minor" data-action="help">怎么玩？</button><button class="minor" data-action="history">历史成绩</button><button class="minor" data-action="medals">我的勋章</button><button class="minor" data-action="author">关注作者 / 反馈</button></div><p class="tiny">${this.practiceStart ? `后 ${waves.length - this.practiceStart} 波练习 · 第 ${this.practiceStart + 1} 波起步 · 不计正式纪录` : `你的最高分 ${digits(this.profile.bestScore)} · 一共十波`}</p>`);
   }
   tutorial() {
     this.state = 'tutorial'; this.input.setEnabled(false);
@@ -134,7 +135,7 @@ export class AppController {
   }
   showResult() {
     this.state = 'result';
-    this.panel(`<div class="eyebrow">${this.isBest ? '新纪录！比上次更厉害了' : '这局的成绩'}</div><h2>${this.sim.reason === '全部波次都打完了' ? '十波全过了！' : '这局炸得怎么样？'}</h2><div class="result-score">${digits(this.sim.score)}</div><div class="result-stats"><span><b>${this.sim.maxCombo}</b>最多连爆</span><span><b>${this.sim.kills}</b>炸掉潜艇</span><span><b>${this.sim.wave + 1}/${waves.length}</b>打到第几波</span></div><p class="tiny">用了 ${this.sim.shots} 颗雷 · 效率奖励 +${this.sim.bonusTotal}${this.practiceStart ? "<br>练习局 · 不计正式纪录" : ""}</p>${this.newMedals.length ? `<p class="gold">新勋章：${this.newMedals.map(m => m.name).join("、")}</p>` : ""}<button class="primary" data-action="replay">再炸一波 →</button><button class="secondary" data-action="card">看看成绩卡 / 晒一下</button><button class="minor" data-action="wave-details">看看每波战报</button><div class="menu-grid"><button class="minor" data-action="history">历史成绩</button><button class="minor" data-action="medals">我的勋章</button><button class="minor" data-action="author">关注作者 / 反馈</button><button class="minor" data-action="same-seed">原样再挑战</button></div><button class="minor" data-action="home">回首页</button>`, true);
+    this.panel(`<div class="eyebrow">${this.isBest ? '新纪录！比上次更厉害了' : '这局的成绩'}</div><h2>${this.sim.reason === '全部波次都打完了' ? this.practiceStart ? '练习完成了！' : '十波全过了！' : '这局炸得怎么样？'}</h2><div class="result-score">${digits(this.sim.score)}</div><div class="result-stats"><span><b>${this.sim.maxCombo}</b>最多连爆</span><span><b>${this.sim.kills}</b>炸掉潜艇</span><span><b>${this.sim.wave + 1}/${waves.length}</b>打到第几波</span></div><p class="tiny">用了 ${this.sim.shots} 颗雷 · 效率奖励 +${this.sim.bonusTotal}${this.practiceStart ? "<br>练习局 · 不计正式纪录" : ""}</p>${this.newMedals.length ? `<p class="gold">新勋章：${this.newMedals.map(m => m.name).join("、")}</p>` : ""}<button class="primary" data-action="replay">再炸一波 →</button><button class="secondary" data-action="card">看看成绩卡 / 晒一下</button><button class="minor" data-action="wave-details">看看每波战报</button><div class="menu-grid"><button class="minor" data-action="history">历史成绩</button><button class="minor" data-action="medals">我的勋章</button><button class="minor" data-action="author">关注作者 / 反馈</button><button class="minor" data-action="same-seed">原样再挑战</button></div><button class="minor" data-action="home">回首页</button>`, true);
   }
   showCard() {
     this.state = 'card'; this.cardImage = this.renderer.scoreCard(this.sim);

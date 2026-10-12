@@ -73,3 +73,5 @@ npx --yes --package @playwright/cli playwright-cli -s=depthchain run-code --file
 ## 升级管理
 
 源码与文档维护于私有仓库 https://github.com/zhuxian518/deep-sea-hunt 。main 为稳定集成分支，变更建议开功能分支提交PR；本机脚本执行单测、构建和离线规则检查；docs/release/validate-workflow.example.yml 提供可启用的GitHub Actions模板。候选版本标签不代表平台审核通过。release目录为可重复构建产物，本机打包即可恢复，不提交node_modules或浏览器会话文件。
+
+最后三波练习：地址加 `?practice=8` 从第8波开始；仍隔离正式存档、最高分和勋章。上传指南最新逐项对照见 docs/release/用户上传指南对照.md。
