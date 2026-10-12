@@ -95,11 +95,11 @@ test('wave waits for hazardous torpedoes and active damage fields', () => {
   const sim = isolated(); sim.torpedoes = [{ id: sim.id++, x: 100, y: 600, px: 100, py: 600, alive: true }];
   advance(sim, 1); assert.equal(sim.status, 'playing'); advance(sim, 300); assert.equal(sim.wave, 1);
 });
-test('all 188 enemies resolve across ten waves without firing, no deadlock', () => {
+test('all configured enemies resolve across ten waves without firing, no deadlock', () => {
   const config = structuredClone(balance); config.player.lives = 999;
   const sim = new Simulation(config, waves, 78421); let largest = 0;
   for (let i = 0; i < 60 * 1000 && sim.status !== 'ended'; i++) { sim.step(dt, { moveAxis: sim.tick % 240 < 120 ? 1 : -1 }); sim.drainEvents(); largest = Math.max(largest, sim.subs.length); }
-  assert.equal(sim.status, 'ended'); assert.equal(sim.wave, 9); assert.equal(sim.escaped, 188); assert.equal(sim.reason, '全部波次都打完了'); assert.ok(largest < 30); assert.equal(sim.chains.size, 0); assert.equal(sim.waveResults.length, 10); assert.equal(sim.bonusTotal, 0);
+  assert.equal(sim.status, 'ended'); assert.equal(sim.wave, 9); assert.equal(sim.escaped, waves.reduce((n,w)=>n+w.count,0)); assert.equal(sim.reason, '全部波次都打完了'); assert.ok(largest < 30); assert.equal(sim.chains.size, 0); assert.equal(sim.waveResults.length, 10); assert.equal(sim.bonusTotal, 0);
 });
 test('seed and tick input replay deterministically', () => {
   const a = new Simulation(balance, waves, 42), b = new Simulation(balance, waves, 42);

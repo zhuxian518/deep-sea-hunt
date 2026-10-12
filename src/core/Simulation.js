@@ -22,6 +22,7 @@ export function validateConfig(config, waves) {
     if (!wave.types.length || wave.types.some(t => !config.enemies[t])) throw new Error('未知潜艇');
     if (!wave.depths.length || wave.depths.some(d => d < config.world.waterline + 80 || d > config.world.height - 80)) throw new Error('深度配置无效');
     if (wave.dropChance !== undefined && (!Number.isFinite(wave.dropChance) || wave.dropChance < 0 || wave.dropChance > 1 || !wave.drops || !wave.drops.length || wave.drops.some(type => !['rapid', 'heavy', 'shield'].includes(type)))) throw new Error('补给配置无效');
+    if (wave.encounters && (['single', 'triple', 'tight'].some(k => !Number.isFinite(wave.encounters[k]) || wave.encounters[k] < 0 || wave.encounters[k] > 1) || wave.encounters.single + wave.encounters.triple > 1)) throw new Error('编队配置无效');
   }
 }
 
@@ -64,18 +65,25 @@ export class Simulation {
   }
   spawn() {
     const wave = this.waves[this.wave];
-    const clustered = wave.clusterEvery && this.spawned % wave.clusterEvery === 0;
-    const group = wave.formation || clustered ? Math.min(3, wave.count - this.spawned) : 1;
-    const side = Math.floor(this.spawned / group) % 2 ? -1 : 1;
-    const anchor = wave.depths[this.spawned % wave.depths.length];
-    const commonSpeed = clustered ? this.config.enemies.S01.speed * wave.speed : 0;
+    const encounter = wave.encounters;
+    const roll = encounter ? this.rng.next() : 0;
+    const requested = encounter ? (roll < encounter.single ? 1 : roll < 1 - encounter.triple ? 2 : 3) : wave.formation ? 3 : 1;
+    const group = Math.min(requested, wave.count - this.spawned);
+    const clustered = !!encounter && group > 1;
+    const side = encounter ? (this.rng.next() < 0.5 ? -1 : 1) : Math.floor(this.spawned / group) % 2 ? -1 : 1;
+    const tight = clustered && this.rng.next() < encounter.tight;
+    const gapX = clustered ? (tight ? 38 + this.rng.next() * 28 : 95 + this.rng.next() * 65) : 45;
+    const gapY = clustered ? (tight ? 28 + this.rng.next() * 26 : 75 + this.rng.next() * 50) : 0;
+    const anchor = clustered ? clamp(wave.depths[Math.floor(this.rng.next() * wave.depths.length)], this.config.world.waterline + 80 + gapY, this.config.world.height - 80 - gapY) : wave.depths[this.spawned % wave.depths.length];
     for (let i = 0; i < group; i++) {
       const n = this.spawned++;
-      const depth = clustered ? clamp(anchor + (i - 1) * 48, this.config.world.waterline + 80, this.config.world.height - 80) : wave.depths[n % wave.depths.length] + (wave.formation ? 0 : (this.rng.next() - 0.5) * 24);
-      const sub = this.addSub(wave.types[n % wave.types.length], side > 0 ? -75 - i * 45 : 1075 + i * 45, depth, side, wave.speed);
-      if (clustered) sub.vx = side * commonSpeed;
+      const depth = clustered ? anchor + (i - (group - 1) / 2) * gapY : wave.depths[n % wave.depths.length] + (wave.formation ? 0 : (this.rng.next() - 0.5) * 24);
+      const typeId = wave.types[n % wave.types.length];
+      const sub = this.addSub(typeId, side > 0 ? -75 - i * gapX : 1075 + i * gapX, depth, side, wave.speed);
+      // Keep type differences: groups converge and separate instead of moving as one target.
+      if (clustered) sub.vx = side * (140 * 0.8 + this.config.enemies[typeId].speed * 0.2) * wave.speed * (0.98 + this.rng.next() * 0.04);
     }
-    this.nextSpawn += wave.interval * (clustered ? group : 1);
+    this.nextSpawn += wave.interval * (encounter ? (1 + (group - 1) * 0.55) * (0.85 + this.rng.next() * 0.3) : 1);
   }
   kill(sub, cause) {
     if (!sub.alive) return;

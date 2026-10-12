@@ -86,12 +86,13 @@
   {
     "name": "它在追你",
     "subtitle": "金色鱼雷会追踪，别一直停着",
-    "count": 18,
-    "interval": 2.8,
+    "count": 24,
+    "interval": 2.7,
     "types": [
       "S01",
       "S04",
-      "S02"
+      "S02",
+      "S03"
     ],
     "depths": [
       420,
@@ -99,23 +100,28 @@
       880
     ],
     "speed": 1.05,
-    "fireRate": 1,
+    "fireRate": 1.05,
     "dropChance": 0.2,
     "drops": [
       "rapid"
     ],
-    "clusterEvery": 5
+    "encounters": {
+      "single": 0.4,
+      "triple": 0.18,
+      "tight": 0.55
+    }
   },
   {
     "name": "三发一起来",
     "subtitle": "齐射有空隙，看准了再穿过去",
-    "count": 20,
-    "interval": 2.7,
+    "count": 28,
+    "interval": 2.5,
     "types": [
       "S02",
       "S05",
       "S03",
-      "S04"
+      "S04",
+      "S03"
     ],
     "depths": [
       420,
@@ -123,19 +129,23 @@
       900
     ],
     "speed": 1.1,
-    "fireRate": 1,
+    "fireRate": 1.12,
     "dropChance": 0.24,
     "drops": [
       "rapid",
       "heavy"
     ],
-    "clusterEvery": 5
+    "encounters": {
+      "single": 0.42,
+      "triple": 0.18,
+      "tight": 0.48
+    }
   },
   {
     "name": "深海交叉火力",
     "subtitle": "护盾补给出现了，开船去接住",
-    "count": 24,
-    "interval": 2.5,
+    "count": 34,
+    "interval": 2.3,
     "types": [
       "S03",
       "S04",
@@ -149,25 +159,31 @@
       1020
     ],
     "speed": 1.15,
-    "fireRate": 1.1,
+    "fireRate": 1.22,
     "dropChance": 0.28,
     "drops": [
       "rapid",
       "heavy",
       "shield"
     ],
-    "clusterEvery": 5
+    "encounters": {
+      "single": 0.44,
+      "triple": 0.17,
+      "tight": 0.42
+    }
   },
   {
     "name": "别停下来",
     "subtitle": "追踪和齐射一起到，移动时也要找连爆",
-    "count": 26,
-    "interval": 2.3,
+    "count": 40,
+    "interval": 2.1,
     "types": [
       "S04",
       "S05",
+      "S03",
+      "S04",
       "S02",
-      "S03"
+      "S05"
     ],
     "depths": [
       380,
@@ -176,24 +192,30 @@
       1000
     ],
     "speed": 1.2,
-    "fireRate": 1.2,
+    "fireRate": 1.34,
     "dropChance": 0.3,
     "drops": [
       "rapid",
       "heavy",
       "shield"
     ],
-    "clusterEvery": 5
+    "encounters": {
+      "single": 0.46,
+      "triple": 0.16,
+      "tight": 0.36
+    }
   },
   {
     "name": "最后的围猎",
     "subtitle": "用好补给，撑过这场深海围猎",
-    "count": 30,
-    "interval": 2.1,
+    "count": 48,
+    "interval": 1.9,
     "types": [
       "S04",
       "S05",
       "S03",
+      "S04",
+      "S05",
       "S02",
       "S05"
     ],
@@ -204,13 +226,17 @@
       1040
     ],
     "speed": 1.25,
-    "fireRate": 1.3,
+    "fireRate": 1.48,
     "dropChance": 0.32,
     "drops": [
       "rapid",
       "heavy",
       "shield"
     ],
-    "clusterEvery": 5
+    "encounters": {
+      "single": 0.48,
+      "triple": 0.15,
+      "tight": 0.3
+    }
   }
 ]
