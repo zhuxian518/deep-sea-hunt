@@ -40,4 +40,3 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* inset and flex gap have explicit fallbacks for the Chrome 61 baseline. */
 .overlay,.damage-flash{top:0;right:0;bottom:0;left:0}
 .audio-controls{gap:0}.audio-controls .icon-button+.icon-button{margin-left:8px}@media(max-width:760px){.audio-controls .icon-button+.icon-button{margin-left:4px}}
-
