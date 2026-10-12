@@ -14,7 +14,9 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run package
+      - run: node scripts/verify-package.mjs
+      - run: node .codex/skills/minitool-zip-builder/scripts/audit_artifact.mjs dist
       - uses: actions/upload-artifact@v4
         with:
-          name: deep-sea-hunt-candidate
+          name: deep-sea-hunt-release-build
           path: release/*.zip

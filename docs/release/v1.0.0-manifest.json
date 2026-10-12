@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "date": "2026-10-12",
+  "tag": "v1.0.0",
+  "approval": {
+    "status": "approved",
+    "source": "Project owner explicit confirmation in conversation on 2026-10-12; review ID not provided"
+  },
+  "baselineBeforeVersioning": "e8c89eb",
+  "lastGameplayCommit": "5a5f04f",
+  "files": {
+    "app.js": {
+      "bytes": 77522,
+      "sha256": "2f20d58f30991387fc3758a1d3707db1d3181c400bab0276f18beccd04d9c7b9"
+    },
+    "icon.svg": {
+      "bytes": 291,
+      "sha256": "f5ece5a5c3cedc44167476687ba5cc361818417c80948fdc02323d9f70bd3a17"
+    },
+    "index.html": {
+      "bytes": 5514,
+      "sha256": "8738e836da2a6b1224fb8286389fe18364d60d9b38026ab0fc962ebcea21741f"
+    },
+    "style.css": {
+      "bytes": 18408,
+      "sha256": "35eac9e1cfd639f21ed65f705f31968996e70b36fd4495c9c67bbf1f1c14e3cd"
+    }
+  }
+}

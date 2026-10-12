@@ -1,77 +1,123 @@
-# 深海较量
+# 深海较量 · Deep Sea Hunt
 
-**瞄准潜艇，投弹连爆。** 致敬经典炸潜艇玩法的原创离线街机小游戏。
+<p align="center"><img src="docs/branding/深海较量-正式图标.png" width="140" alt="深海较量正式图标"></p>
+<p align="center"><strong>驾驶舰船投下水雷，对抗敌方潜艇</strong><br>经典炸潜艇玩法 · 原创离线 Canvas H5 · 小红书小工具</p>
+<p align="center"><a href="#快速开始">快速开始</a> · <a href="CHANGELOG.md">更新日志</a> · <a href="CONTRIBUTING.md">开发指南</a> · <a href="docs/release/v1.0.0.md">1.0.0 发布记录</a></p>
 
-当前版本包含十波关卡、五类潜艇、直线/追踪/齐射鱼雷、水深加分、每波投弹效率奖励、第六波起的限时补给、连锁爆炸、三条生命、教程、暂停、结算、每波战报、本机纪录、自动/手动存档、最近60局成绩曲线、十枚勋章、作者反馈、成绩卡和独立音乐/音效开关。移动端左右按钮移动、按住中间投弹；电脑方向键 / A、D 移动，空格投弹，P / Esc 暂停。
+## 当前版本
 
-前五波无道具。后期击沉有机会掉落上浮补给，开船接住后获得加速5秒、强化5秒或最多4秒挡一次命中的护盾；暂停不消耗时限。同种道具不续时。连炸最多一次掉落尝试，补给受冷却和波次预算限制。全机型同时最多三颗水雷在水中，命中或落出画面后释放弹位。原创背景音乐为76.8秒分段循环，后期增加节奏层次。音乐默认关闭，点击顶部“音乐关”开启，进入战斗后播放。
+**1.0.0 · 官方审核已通过。** 审核状态由项目所有者于 2026-10-12 确认。本仓库保存源码、锁定依赖、设计、测试、原创素材和发布文件；正式基线为 Git 标签 `v1.0.0`。
 
-## 试玩
+这是对经典炸潜艇玩法的原创实现。小红书小工具与普通浏览器共用一套逻辑，无后端、无账号系统、无运行时网络依赖。审核通过与全机型实测是两件事，已测范围见[兼容性记录](docs/09_手机兼容性验证.md)。公开挂载笔记地址尚未登记。
+
+## 游戏画面
+
+<p align="center"><img src="docs/previews/promo-02-combat.png" width="260" alt="后期战斗演示"> <img src="docs/previews/promo-03-chain.png" width="260" alt="连锁爆炸演示"></p>
+<p align="center"><em>本作实际渲染画面；战斗组合、连爆场景和示例分数为演示。</em></p>
+
+## 1.0.0 有什么
+
+| 体验 | 内容 |
+| --- | --- |
+| 十波海战 | 五类潜艇；直线、追踪和多枚齐射鱼雷；双艇、三艇及不同紧密度的相遇场景 |
+| 投弹与连爆 | 水中同时最多三颗水雷；命中或落出战场后释放弹位；后期连爆影响范围逐步收紧 |
+| 计分 | 潜艇类型分、水深加分、连爆倍率，以及完成波次后的投弹效率奖励 |
+| 限时补给 | 第六波起可能掉落水雷加速、强化水雷和单次护盾，受时限、冷却及每波数量限制 |
+| 水下表现 | 水雷晃动、潜艇尾迹、鱼雷推进水流与气泡、爆炸和舰船受击效果 |
+| 音乐与音效 | 原创合成配乐，独立开关；音乐默认关闭，需手动开启 |
+| 进度与成长 | 手动/自动存档、继续游戏、最近60局成绩曲线、十枚勋章、结算成绩卡 |
+| 手机操作 | 多指触控、长按投弹、禁止按钮文字选中、安全区和低特效选项 |
+
+存档位于本机、当前小工具的存储环境内，不提供跨设备云同步。分享、保存图片和评论草稿由玩家主动点击，并按客户端能力降级。
+
+## 快速开始
+
+开发环境使用 **Node.js 22 或更新版本**及 npm。运行游戏只需要浏览器；构建工具不进入正式包。首次克隆私有仓库需要已有的 GitHub 访问权限。
 
 ```sh
-npm install
+git clone https://github.com/zhuxian518/deep-sea-hunt.git
+cd deep-sea-hunt
+npm ci
 npm run dev
 ```
 
-打开 <http://127.0.0.1:4173>。开发预览会生成 `dist/` 并暴露仅本地测试使用的诊断入口；正式构建会移除该入口。
+访问 `http://127.0.0.1:4173`。开发预览包含诊断入口，只用于本地调试。
 
-也可执行 `npm run build` 后直接打开 `dist/index.html`。不需要后端、账户、联网资源或外部字体。
+| 操作 | 手机 / 平板 | 电脑 |
+| --- | --- | --- |
+| 移动 | 按住左右按钮 | 方向键或 A / D |
+| 投弹 | 按住投弹按钮 | 空格 |
+| 暂停 | 暂停按钮 | P / Esc |
 
-手机浏览器试玩：电脑运行 `npm run preview:lan`，手机与电脑连接同一个Wi-Fi，在手机浏览器访问 `http://电脑的局域网IP:4174`。此入口提供正式构建，不暴露开发诊断对象；试玩期间电脑与服务需保持运行。IP可在Windows网络设置中查看；若Windows询问是否允许Node.js通过防火墙，允许专用网络。浏览器试玩不等于小红书容器真机适配已通过。
+后五波练习访问 `/?practice=6`，最后三波访问 `/?practice=8`。练习局不写入正式存档、最高分、历史或勋章。
 
-后五波练习：地址后加 `?practice=6`，从第六波开始，不覆盖正式存档、纪录或勋章。正式局在暂停页可手动保存，或等待自动保存；同一设备重新打开后从首页继续。记录保存在本机，不跨设备同步。
+### 在手机上预览
 
-## 检查与打包
+运行 `npm run preview:lan`，手机与电脑连接同一局域网，访问 `http://电脑的局域网IP:4174`；电脑和服务需保持运行。该命令生成正式构建，去掉诊断入口。仅本机预览可运行 `npm run build`，再打开 `dist/index.html`。
+
+两种预览服务共享 `dist/`，不要一边跑开发构建一边验收正式包。完成调试后重新生成正式构建。
+
+## 验证与发布文件
 
 ```sh
 npm test
 npm run package
+node scripts/verify-package.mjs
+node .codex/skills/minitool-zip-builder/scripts/audit_artifact.mjs dist
+python .codex/skills/minitool-zip-builder/scripts/audit_artifact.py release/深海较量-v1.0.0.zip
 ```
 
-- `release/DepthChain-preview.zip`：纯离线游戏预览包，解压后直接打开根目录 `index.html`。
-- `release/DepthChain-documents.zip`：PRD、技术设计、考据、实施补充、名称文案、素材登记与测试记录；保留 `docs/` 相对路径。
-- `npm run validate`：检查入口、文件类型、外链/禁用能力、经典脚本、打包体积。
+`npm run package` 构建、检查离线规则并生成下列文件。正式附件在[私有仓库 Releases](https://github.com/zhuxian518/deep-sea-hunt/releases/tag/v1.0.0)，需要仓库访问权限。
 
-浏览器检查使用 Playwright CLI，启动开发预览后执行：
+| 文件 | 用途 |
+| --- | --- |
+| `release/深海较量-v1.0.0.zip` | 正式游戏包，仅包含四个运行资源 |
+| `release/DepthChain-documents.zip` | 设计、开发、更新和验证文档 |
+| `release/深海较量-v1.0.0-推广素材.zip` | 图标、截图和推广草稿，文案尚待定稿 |
+| `release/SHA256SUMS.txt` | 本次生成的发布附件校验值 |
+| `docs/branding/深海较量-正式图标.png` | 平台独立图标字段，另附于 Release |
 
-```sh
-npx --yes --package @playwright/cli playwright-cli -s=depthchain open http://127.0.0.1:4173 --browser chrome
-npx --yes --package @playwright/cli playwright-cli -s=depthchain run-code --filename=tests/browser-smoke.cjs
-```
-
-浏览器检查使用独立自动化浏览器，在开发入口中构造固定测试场景，不连接真实小红书账号。截图在 `output/playwright/`，关键预览副本在 `docs/previews/`。
-
-## 文档
-
-- [存档、勋章、反馈和音乐补充](docs/07_存档勋章与首版补充.md)
-- [小红书规则与推广调研](docs/08_小红书上传与推广调研.md)
-- [手机兼容性验证](docs/09_手机兼容性验证.md)
-- [推广长文图文](docs/promotion/深海较量_长文图文.html)
-- [小红书发布稿](docs/promotion/深海较量_小红书发布稿.md)
-- [首版交付说明](docs/10_首版交付说明.md)
-
-- [PRD](WinDepth_PRD.md)
-- [技术设计](WinDepth_Technical_Design.md)
-- [原作考据、证据和待核验清单](docs/03_原作考证_来源及待核验清单.md)
-- [实施计划与设计补充](docs/04_实施计划与设计补充.md)
-- [名称与界面文案](docs/05_名称与界面文案.md)
-- [十波、计分、补给与体验增强](docs/06_十波扩展与体验增强.md)
-- [素材来源登记](docs/assets-register.md)
-- [测试报告](docs/test-reports/2026-10-12.md)
-- [本轮增强测试报告](docs/test-reports/2026-10-12-enhancements.md)
-
-## 交付边界
-
-这是可试玩的十波扩展版，不是原作全部20关的高保真复制。运行数值为原创设计初值，当前增量以06/07号文档为准；历史精确规则仍待原版程序测量。全部画面、音乐与音效由本项目绘制/合成，没有使用原作图片、音乐或代码。
-
-小红书原生存储、分享及保存按当前官方公开契约实现，浏览器替身测试通过不等于小红书实机通过。用户已提供官方 minitool-zip-builder 1.7.0 口令并完成静态校验，详见 docs/release/官方Skill校验摘要.md。正式提交仍需平台模拟器及 iOS / Android 容器联调和体验验收。当前不作审核通过或设备帧率承诺。
+`DepthChain-preview.zip`、`深海较量-v1.0.0-上传候选.zip` 为历史工具兼容别名，内容与正式游戏包相同，不重复上传为新版本。游戏 ZIP 根目录仅有 `index.html`、`app.js`、`style.css`、`icon.svg`。文档包、推广包不是游戏执行包。构建产物不提交源码分支，通过 Release 附件归档。
 
 ## 工程结构
 
-`src/core` 为纯逻辑固定60Hz模拟；`src/systems` 处理碰撞与计分；`src/render` 为只读渲染与有界表现对象；`src/input` 支持键盘和多指输入；`src/platform` 隔离存储与主动分享；`src/app` 管理页面和生命周期。`src/config` 集中保存原创数值和十波表。
+```text
+src/
+  app/          页面、流程和生命周期
+  core/         固定60Hz模拟、随机数、时钟与存档快照
+  systems/      碰撞、计分、成长记录
+  config/       波次、平衡参数与作者配置
+  render/       Canvas绘制与表现效果
+  input/        键盘、多指触控及兼容降级
+  audio/        原创配乐与音效合成
+  platform/     存储、分享及反馈适配
+  css/          页面与跨端样式
+tests/          单元测试、场景与浏览器验证脚本
+scripts/        构建、预览、打包、检查和数值探针
+docs/           设计、实施记录、测试、素材和发布文档
+.github/        Issue与PR模板
+.codex/skills/  官方小工具打包Skill及审计脚本
+```
 
-## 升级管理
+核心模拟可确定性回放；渲染不能改变碰撞、连爆或得分。数值修改集中在 `src/config`，存档恢复必须保留随机状态、实体和连爆关系。更多约定见[开发指南](CONTRIBUTING.md)与[项目维护规则](AGENTS.md)。
 
-源码与文档维护于私有仓库 https://github.com/zhuxian518/deep-sea-hunt 。main 为稳定集成分支，变更建议开功能分支提交PR；本机脚本执行单测、构建和离线规则检查；docs/release/validate-workflow.example.yml 提供可启用的GitHub Actions模板。候选版本标签不代表平台审核通过。release目录为可重复构建产物，本机打包即可恢复，不提交node_modules或浏览器会话文件。
+## 文档导航
 
-最后三波练习：地址加 `?practice=8` 从第8波开始；仍隔离正式存档、最高分和勋章。上传指南最新逐项对照见 docs/release/用户上传指南对照.md。
+| 文档 | 说明 |
+| --- | --- |
+| [更新日志](CHANGELOG.md) | 对玩家有影响的版本变更 |
+| [开发指南](CONTRIBUTING.md) | 环境、修改入口、测试和分支约定 |
+| [发布流程](docs/release/RELEASING.md) | 版本冻结、验证、归档、升级与回退 |
+| [1.0.0 发布记录](docs/release/v1.0.0.md) | 审核来源、正式范围和验证结果 |
+| [版本内容清单](docs/release/v1.0.0-manifest.json) | 正式运行文件的SHA-256，用于比对冻结内容 |
+| [文档索引](docs/README.md) | 当前事实、历史规划和参考资料的分层入口 |
+| [十波与体验设计](docs/06_十波扩展与体验增强.md) / [存档与成长](docs/07_存档勋章与首版补充.md) | 产品设计 |
+| [最新难度方案](docs/plans/2026-10-12-supplies-and-three-mines.md) | 三弹位、限时补给和连爆范围 |
+| [手机兼容性](docs/09_手机兼容性验证.md) | 已测与待测环境 |
+| [素材登记](docs/assets-register.md) / [安全说明](SECURITY.md) | 来源、权限与问题报告 |
+
+## 维护与授权
+
+[zhuxian518/deep-sea-hunt](https://github.com/zhuxian518/deep-sea-hunt) 为私有项目，未授予开源许可。游戏画面、音乐、音效由本项目绘制或合成，未使用原作图片、音乐或代码；正式图标的生成来源见[品牌素材说明](docs/branding/README.md)。开发依赖及随附 Skill 遵循各自许可声明。
+
+`main` 用于稳定集成，后续修改使用 `codex/` 功能分支。`v1.0.0` 固定，不随以后提交移动。GitHub Actions 配置以[模板](docs/release/validate-workflow.example.yml)保存，尚未启用，不显示虚假的CI通过徽章。
