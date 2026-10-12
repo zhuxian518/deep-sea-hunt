@@ -24,6 +24,7 @@ export function restoreCheckpoint(Simulation, config, waves, save) {
       if (key==='pickups' && (!['rapid','heavy','shield'].includes(entity.type) || !finite(entity.age))) throw Error('存档补给无效');
       if (entity.speed!==undefined && (!finite(entity.speed)||entity.speed<=0||entity.speed>1000)) throw Error('存档速度无效');
       if (entity.power!==undefined && (!finite(entity.power)||entity.power<=0||entity.power>2)) throw Error('存档武器无效');
+      if (entity.maxRadius!==undefined && (!finite(entity.maxRadius)||entity.maxRadius<=0||entity.maxRadius>200)) throw Error('存档爆炸范围无效');
       if (entity.vx!==undefined && (!finite(entity.vx)||Math.abs(entity.vx)>1000)) throw Error('存档航向无效');
     }
   }

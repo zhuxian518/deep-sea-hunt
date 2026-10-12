@@ -26,6 +26,7 @@ export function validateConfig(config, waves) {
     for (const key of ['supplyCooldown','supplyLimit','firstAttack','torpedoSpeed','fireRate']) if (wave[key] !== undefined && !positive(wave[key])) throw new Error('难度配置无效');
     if (wave.supplyLimit !== undefined && !Number.isInteger(wave.supplyLimit)) throw new Error('补给上限无效');
     if (wave.aimChance !== undefined && (!Number.isFinite(wave.aimChance) || wave.aimChance<0 || wave.aimChance>1)) throw new Error('瞄准概率无效');
+    if (wave.chainRadiusScale !== undefined && (!positive(wave.chainRadiusScale) || wave.chainRadiusScale>1)) throw new Error('连爆范围配置无效');
   }
 }
 
@@ -89,7 +90,7 @@ export class Simulation {
       const typeId = wave.types[n % wave.types.length];
       const sub = this.addSub(typeId, side > 0 ? -75 - i * gapX : 1075 + i * gapX, depth, side, wave.speed);
       // Keep type differences: groups converge and separate instead of moving as one target.
-      if (clustered) sub.vx = side * (140 * 0.8 + this.config.enemies[typeId].speed * 0.2) * wave.speed * (0.98 + this.rng.next() * 0.04);
+      if (clustered) sub.vx = side * (140 * 0.45 + this.config.enemies[typeId].speed * 0.55) * wave.speed * (0.98 + this.rng.next() * 0.04);
     }
     this.nextSpawn += wave.interval * (encounter ? (1 + (group - 1) * 0.55) * (0.85 + this.rng.next() * 0.3) : 1);
   }
@@ -106,7 +107,7 @@ export class Simulation {
     this.emit('kill', { x: sub.x, y: sub.y, points, depth, combo: chain.kills, chainId: chain.id });
     if (!chain.supplyRolled) { chain.supplyRolled = true; this.dropPowerup(sub); }
     if (def.chainExplodable) {
-      this.explosions.push({ id: this.id++, x: sub.x, y: sub.y, radius: 0, age: 0, chainId: chain.id, depth, power: cause.source.power || 1, damaged: new Set() });
+      this.explosions.push({ id: this.id++, x: sub.x, y: sub.y, radius: 0, age: 0, chainId: chain.id, depth, power: cause.source.power || 1, maxRadius: this.config.explosion.radius * (this.waves[this.wave].chainRadiusScale || 1) * (cause.source.power || 1), damaged: new Set() });
     }
   }
   step(dt, input = {}) {
@@ -173,7 +174,7 @@ export class Simulation {
       }
     }
     for (const ex of activeExplosions) {
-      ex.age += dt; ex.radius = Math.min(c.explosion.radius * (ex.power || 1), ex.radius + c.explosion.growth * (ex.power || 1) * dt);
+      ex.age += dt; ex.radius = Math.min(ex.maxRadius || c.explosion.radius * (this.waves[this.wave].chainRadiusScale || 1) * (ex.power || 1), ex.radius + c.explosion.growth * (ex.power || 1) * dt);
       if (ex.age > c.explosion.lifetime + 1e-9) continue;
       for (const sub of this.subs) if (sub.alive && !ex.damaged.has(sub.id) && circleBox(ex.x, ex.y, ex.radius, sub)) {
         ex.damaged.add(sub.id);

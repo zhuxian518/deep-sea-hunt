@@ -14,8 +14,8 @@ test('late encounters vary size and spacing, retaining achievable but non-guaran
       const sim=new Simulation(config,waves,seed*7919);sim.wave=wave;sim.setupWave();sim.status='playing';sim.player.invincible=100;sim.spawn();sim.nextSpawn=999;
       const size=sim.subs.length;sizes.add(size);
       if(size>1)gaps.add(Math.abs(sim.subs[0].y-sim.subs[1].y)<60?'tight':'loose');
-      for(let i=0;i<210;i++)sim.step(1/60,{});
-      const target=sim.subs[0];sim.bombs.push({id:sim.id++,x:target.x,y:target.y,px:target.x,py:target.y,alive:true});
+      for(let i=0;i<120+(seed%5)*30;i++)sim.step(1/60,{});
+      const target=sim.subs[seed%size];if(target.x<65||target.x>935)continue;sim.bombs.push({id:sim.id++,x:target.x,y:target.y,px:target.x,py:target.y,alive:true});
       for(let i=0;i<45;i++)sim.step(1/60,{});
       if(size>1){if(sim.maxCombo>1)chains++;else missedChains++;}
     }

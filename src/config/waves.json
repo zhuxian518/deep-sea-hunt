@@ -115,7 +115,8 @@
     "firstAttack": 1.8,
     "aimed": true,
     "torpedoSpeed": 1.08,
-    "aimChance": 0.3
+    "aimChance": 0.3,
+    "chainRadiusScale": 0.98
   },
   {
     "name": "三发一起来",
@@ -151,7 +152,8 @@
     "firstAttack": 1.6500000000000001,
     "aimed": true,
     "torpedoSpeed": 1.1500000000000001,
-    "aimChance": 0.44999999999999996
+    "aimChance": 0.44999999999999996,
+    "chainRadiusScale": 0.95
   },
   {
     "name": "深海交叉火力",
@@ -188,7 +190,8 @@
     "firstAttack": 1.5,
     "aimed": true,
     "torpedoSpeed": 1.2200000000000002,
-    "aimChance": 0.6
+    "aimChance": 0.6,
+    "chainRadiusScale": 0.92
   },
   {
     "name": "别停下来",
@@ -227,7 +230,8 @@
     "firstAttack": 1.35,
     "aimed": true,
     "torpedoSpeed": 1.29,
-    "aimChance": 0.75
+    "aimChance": 0.75,
+    "chainRadiusScale": 0.89
   },
   {
     "name": "最后的围猎",
@@ -267,6 +271,7 @@
     "firstAttack": 1.2000000000000002,
     "aimed": true,
     "torpedoSpeed": 1.36,
-    "aimChance": 0.8999999999999999
+    "aimChance": 0.8999999999999999,
+    "chainRadiusScale": 0.86
   }
 ]

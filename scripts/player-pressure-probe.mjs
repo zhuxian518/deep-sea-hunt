@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { Simulation } from '../src/core/Simulation.js';
-const baseline='8200a01';
+const baseline=process.argv[2]||'8200a01';
 const previous=path=>execFileSync('git',['show',`${baseline}:${path}`],{encoding:'utf8'});
 const source=previous('src/core/Simulation.js').replace(/from '([^']+)'/g,(_,ref)=>`from '${new URL(ref,pathToFileURL(resolve('src/core/Simulation.js'))).href}'`);
 const OldSimulation=(await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'))).Simulation;
@@ -39,5 +39,5 @@ for(const [version,Constructor,config,waves] of variants)for(const strategy of [
   }
   rows.push({version,strategy,wave:wave+1,clearsOutOf20:clears,meanDamage:+(damage/20).toFixed(2),meanBuffs:+(buffs/20).toFixed(2),meanKills:+(kills/20).toFixed(2),shieldCoverage:+(shieldSeconds/time).toFixed(3)});
 }
-await writeFile('docs/test-reports/player-pressure-probe.json',JSON.stringify({baseline,scope:'Real three-life simulations with firing and naturally collected supplies; fixed simple policies, not human play or certification',rows},null,2)+'\n');
+await writeFile(baseline==='8200a01'?'docs/test-reports/player-pressure-probe.json':'docs/test-reports/chain-window-pressure-probe.json',JSON.stringify({baseline,scope:'Real three-life simulations with firing and naturally collected supplies; fixed simple policies, not human play or certification',rows},null,2)+'\n');
 console.table(rows);
