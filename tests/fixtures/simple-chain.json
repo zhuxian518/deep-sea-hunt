@@ -1,0 +1,1 @@
+{"seed":17,"subs":[{"type":"S01","x":400,"y":450},{"type":"S01","x":530,"y":450},{"type":"S01","x":660,"y":450}],"bomb":{"x":400,"y":425},"expected":{"kills":3,"score":450,"maxCombo":3}}

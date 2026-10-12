@@ -1,0 +1,6 @@
+id,version,source,timestamp,metric,value,unit,samples,status
+REF01,unknown,,,original-keybindings,,,,pending
+REF02,unknown,,,ship-speed-normalized,,,,pending
+REF03,unknown,,,bomb-speed-normalized,,,,pending
+REF04,unknown,,,explosion-radius-normalized,,,,pending
+REF05,unknown,,,original-score-formula,,,,pending
