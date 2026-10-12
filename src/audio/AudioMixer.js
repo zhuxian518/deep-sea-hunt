@@ -2,7 +2,20 @@ import { musicStep, STEP_SECONDS } from './MusicScore.js';
 export class AudioMixer {
   constructor() { this.enabled=true; this.context=null; this.voices=0; this.musicEnabled=false; this.musicActive=false; this.musicNotes=new Set(); this.nextBeat=0; this.beat=0; this.musicBus=null; this.noise=null; this.duckUntil=0; }
   unlock() {
-    try { const Constructor=window.AudioContext || window.webkitAudioContext; if (!this.context && Constructor) this.context=new Constructor(); if (this.context && this.context.state==='suspended') this.context.resume().catch(()=>{}); } catch (_) { this.context=null; }
+    try { if (window.navigator && window.navigator.audioSession) window.navigator.audioSession.type='playback'; } catch (_) { /* Optional audio-session enhancement. */ }
+    try {
+      const Constructor=window.AudioContext || window.webkitAudioContext;
+      if ((!this.context || this.context.state==='closed') && Constructor) { this.context=new Constructor(); this.musicBus=null; this.noise=null; this.nextBeat=0; this.primed=false; }
+      const c=this.context;
+      if (!c) return;
+      // WebKit may report interrupted after leaving Safari or locking the screen.
+      // Resume and prime output synchronously inside the user's touch/click gesture.
+      if (c.state!=='running') { const resumed=c.resume(); if (resumed && resumed.catch) resumed.catch(()=>{}); }
+      if (c.state!=='running' || !this.primed) {
+        const source=c.createBufferSource(); source.buffer=c.createBuffer(1,1,c.sampleRate); source.connect(c.destination);
+        source.onended=()=>source.disconnect(); source.start(0); this.primed=true;
+      }
+    } catch (_) { /* Keep existing context available for the next gesture. */ }
   }
   play(type,depth=0) {
     if (!this.enabled || !this.context || this.context.state!=='running' || this.voices>=6) return;

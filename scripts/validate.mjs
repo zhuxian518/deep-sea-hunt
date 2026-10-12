@@ -31,4 +31,4 @@ for (const file of files) {
 }
 if (bytes > 2 * 1024 * 1024) fail('Exceeded internal 2MiB budget');
 console.log(`PASS: ${files.length} packaged files, ${bytes} bytes; classic script, offline resources, baseline build.`);
-console.log('Local audit only; current upload-page Skill and real-device review are still required.');
+console.log('Local audit only; platform simulator and real-device review are still required.');

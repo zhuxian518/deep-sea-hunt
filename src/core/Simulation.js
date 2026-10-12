@@ -64,14 +64,18 @@ export class Simulation {
   }
   spawn() {
     const wave = this.waves[this.wave];
-    const group = wave.formation ? Math.min(3, wave.count - this.spawned) : 1;
+    const clustered = wave.clusterEvery && this.spawned % wave.clusterEvery === 0;
+    const group = wave.formation || clustered ? Math.min(3, wave.count - this.spawned) : 1;
     const side = Math.floor(this.spawned / group) % 2 ? -1 : 1;
+    const anchor = wave.depths[this.spawned % wave.depths.length];
+    const commonSpeed = clustered ? this.config.enemies.S01.speed * wave.speed : 0;
     for (let i = 0; i < group; i++) {
       const n = this.spawned++;
-      const depth = wave.depths[n % wave.depths.length] + (wave.formation ? 0 : (this.rng.next() - 0.5) * 24);
-      this.addSub(wave.types[n % wave.types.length], side > 0 ? -75 - i * 45 : 1075 + i * 45, depth, side, wave.speed);
+      const depth = clustered ? clamp(anchor + (i - 1) * 48, this.config.world.waterline + 80, this.config.world.height - 80) : wave.depths[n % wave.depths.length] + (wave.formation ? 0 : (this.rng.next() - 0.5) * 24);
+      const sub = this.addSub(wave.types[n % wave.types.length], side > 0 ? -75 - i * 45 : 1075 + i * 45, depth, side, wave.speed);
+      if (clustered) sub.vx = side * commonSpeed;
     }
-    this.nextSpawn += wave.interval;
+    this.nextSpawn += wave.interval * (clustered ? group : 1);
   }
   kill(sub, cause) {
     if (!sub.alive) return;

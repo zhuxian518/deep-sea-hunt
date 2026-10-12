@@ -195,7 +195,7 @@ export class CanvasRenderer {
     const canvas = document.createElement('canvas'); canvas.width = 720; canvas.height = 960; const c = canvas.getContext('2d');
     c.fillStyle = '#0b2c3d'; c.fillRect(0, 0, 720, 960); c.strokeStyle = '#325263'; c.lineWidth = 1;
     for (let y = 0; y < 960; y += 40) { c.beginPath(); c.moveTo(0, y); c.lineTo(720, y); c.stroke(); }
-    c.fillStyle = '#e8e2c9'; c.font = 'bold 58px sans-serif'; c.fillText('深海猎杀', 64, 125);
+    c.fillStyle = '#e8e2c9'; c.font = 'bold 58px sans-serif'; c.fillText('深海较量', 64, 125);
     c.font = '18px monospace'; c.fillStyle = '#8aadae'; c.fillText('炸潜艇 · 这局的成绩', 67, 165);
     c.fillStyle = '#efac70'; c.font = 'bold 105px monospace'; c.fillText(String(sim.score).padStart(6, '0'), 58, 365);
     c.fillStyle = '#e8e2c9'; c.font = '30px sans-serif'; c.fillText(`一颗最多炸 ${sim.maxCombo} 艘`, 64, 465); c.fillText(`共炸掉 ${sim.kills} 艘 · 打到第 ${sim.wave + 1} 波`, 64, 530);

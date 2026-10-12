@@ -1,4 +1,4 @@
-# 深海猎杀
+# 深海较量
 
 **瞄准潜艇，投弹连爆。** 致敬经典炸潜艇玩法的原创离线街机小游戏。
 
@@ -46,8 +46,8 @@ npx --yes --package @playwright/cli playwright-cli -s=depthchain run-code --file
 - [存档、勋章、反馈和音乐补充](docs/07_存档勋章与首版补充.md)
 - [小红书规则与推广调研](docs/08_小红书上传与推广调研.md)
 - [手机兼容性验证](docs/09_手机兼容性验证.md)
-- [推广长文图文](docs/promotion/深海猎杀_长文图文.html)
-- [小红书发布稿](docs/promotion/深海猎杀_小红书发布稿.md)
+- [推广长文图文](docs/promotion/深海较量_长文图文.html)
+- [小红书发布稿](docs/promotion/深海较量_小红书发布稿.md)
 - [首版交付说明](docs/10_首版交付说明.md)
 
 - [PRD](WinDepth_PRD.md)
@@ -64,7 +64,7 @@ npx --yes --package @playwright/cli playwright-cli -s=depthchain run-code --file
 
 这是可试玩的十波扩展版，不是原作全部20关的高保真复制。运行数值为原创设计初值，当前增量以06/07号文档为准；历史精确规则仍待原版程序测量。全部画面、音乐与音效由本项目绘制/合成，没有使用原作图片、音乐或代码。
 
-小红书原生存储、分享及保存按当前官方公开契约实现，浏览器替身测试通过不等于小红书实机通过。正式提交还需要上传页当时的完整改写口令，以及 iOS / Android 容器联调和体验验收。当前不作审核通过或设备帧率承诺。
+小红书原生存储、分享及保存按当前官方公开契约实现，浏览器替身测试通过不等于小红书实机通过。用户已提供官方 minitool-zip-builder 1.7.0 口令并完成静态校验，详见 docs/release/官方Skill校验摘要.md。正式提交仍需平台模拟器及 iOS / Android 容器联调和体验验收。当前不作审核通过或设备帧率承诺。
 
 ## 工程结构
 

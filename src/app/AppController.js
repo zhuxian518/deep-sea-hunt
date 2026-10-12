@@ -36,11 +36,16 @@ export class AppController {
     el('low-fx').addEventListener('change', event => { this.profile.settings.lowFx = event.target.checked; this.applySettings(); this.persist(); });
     document.querySelector('.wordmark').addEventListener('click', event => { event.preventDefault(); if (this.state === 'game') this.pause(); });
     window.addEventListener('resize', () => this.resize());
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', () => this.resize());
+    const unlockAudio = () => { if (this.profile && (this.profile.settings.sfx || this.profile.settings.music)) this.audio.unlock(); };
+    document.addEventListener('touchstart', unlockAudio, { passive: true });
+    document.addEventListener('pointerdown', unlockAudio, { passive: true });
+    document.addEventListener('keydown', unlockAudio);
     window.addEventListener('blur', () => this.pause());
     document.addEventListener('visibilitychange', () => { if (document.hidden) { this.pause(); this.audio.suspend(); } });
     window.addEventListener('pagehide', () => this.saveProgress());
     el('sound').disabled = true; el('music').disabled = true; el('low-fx').disabled = true;
-    this.panel('<div class="eyebrow">深海猎杀</div><h2>马上就好</h2><p>找找你上次的纪录…</p>');
+    this.panel('<div class="eyebrow">深海较量</div><h2>马上就好</h2><p>找找你上次的纪录…</p>');
     this.resize(); requestAnimationFrame(this.frame);
   }
   async boot() {
@@ -52,7 +57,7 @@ export class AppController {
     el('sound').disabled = false; el('music').disabled = false; el('low-fx').disabled = false;
     this.home();
   }
-  resize() { document.documentElement.style.setProperty('--viewport-height', `${window.innerHeight}px`); this.renderer.resize(); }
+  resize() { document.documentElement.style.setProperty('--viewport-height', `${window.visualViewport ? window.visualViewport.height : window.innerHeight}px`); this.renderer.resize(); }
   applySettings() {
     this.audio.enabled = this.profile.settings.sfx;
     this.audio.setMusic(this.profile.settings.music, this.state === 'game');
@@ -89,7 +94,7 @@ export class AppController {
     this.state = 'home'; this.sim = null; this.input.setEnabled(false); this.clock.reset(); this.renderer.clearEffects(); this.lastHud = '';
     el('pause').disabled = true; el('wave-notice').hidden = true;
     const save = !this.practiceStart && this.profile.checkpoint;
-    this.panel(`<div class="eyebrow">炸潜艇 · 连爆挑战</div><h2>深海猎杀</h2><p class="gold">瞄准潜艇，投弹连爆。</p><p>炸掉一艘，带上旁边的。<br>试试一颗炸弹能炸几艘？</p>${save ? `<button class="primary" data-action="continue">继续上次 · 第 ${save.state.wave + 1} 波 →</button><button class="secondary" data-action="start">重新开始</button>` : '<button class="primary" data-action="start">开炸！ &nbsp; →</button>'}<div class="menu-grid"><button class="minor" data-action="help">怎么玩？</button><button class="minor" data-action="history">历史成绩</button><button class="minor" data-action="medals">我的勋章</button><button class="minor" data-action="author">关注作者 / 反馈</button></div><p class="tiny">${this.practiceStart ? `后 ${waves.length - this.practiceStart} 波练习 · 第 ${this.practiceStart + 1} 波起步 · 不计正式纪录` : `你的最高分 ${digits(this.profile.bestScore)} · 一共十波`}</p>`);
+    this.panel(`<div class="eyebrow">炸潜艇 · 连爆挑战</div><h2>深海较量</h2><p class="gold">驾驶舰船投下水雷，对抗敌方潜艇</p><p>炸掉一艘，带上旁边的。<br>试试一颗炸弹能炸几艘？</p>${save ? `<button class="primary" data-action="continue">继续上次 · 第 ${save.state.wave + 1} 波 →</button><button class="secondary" data-action="start">重新开始</button>` : '<button class="primary" data-action="start">开炸！ &nbsp; →</button>'}<div class="menu-grid"><button class="minor" data-action="help">怎么玩？</button><button class="minor" data-action="history">历史成绩</button><button class="minor" data-action="medals">我的勋章</button><button class="minor" data-action="author">关注作者 / 反馈</button></div><p class="tiny">${this.practiceStart ? `后 ${waves.length - this.practiceStart} 波练习 · 第 ${this.practiceStart + 1} 波起步 · 不计正式纪录` : `你的最高分 ${digits(this.profile.bestScore)} · 一共十波`}</p>`);
   }
   tutorial() {
     this.state = 'tutorial'; this.input.setEnabled(false);
@@ -139,7 +144,7 @@ export class AppController {
   }
   showCard() {
     this.state = 'card'; this.cardImage = this.renderer.scoreCard(this.sim);
-    this.panel('<div class="eyebrow">深海猎杀 · 你的成绩卡</div><h2>这成绩，晒一下</h2><img class="score-preview" id="score-preview" alt="深海猎杀本局成绩卡"><button class="primary" data-action="share">分享到小红书</button><button class="secondary" data-action="save-image">存到相册</button><button class="minor" data-action="result">回去看成绩</button>', true);
+    this.panel('<div class="eyebrow">深海较量 · 你的成绩卡</div><h2>这成绩，晒一下</h2><img class="score-preview" id="score-preview" alt="深海较量本局成绩卡"><button class="primary" data-action="share">分享到小红书</button><button class="secondary" data-action="save-image">存到相册</button><button class="minor" data-action="result">回去看成绩</button>', true);
     el('score-preview').src = this.cardImage;
   }
   collection(name) {
@@ -167,7 +172,7 @@ export class AppController {
       button.disabled = true;
       const saved = await this.persist();
       if (!saved) this.toast('记录暂未保存，留在这里再试一次');
-      else this.toast((await openFeedback(window, `《深海猎杀》反馈：${draft}`)).message);
+      else this.toast((await openFeedback(window, `《深海较量》反馈：${draft}`)).message);
       button.disabled = false;
     }
     if (name === 'start') { this.audio.unlock(); if (!this.profile.tutorialSeen) this.tutorial(); else this.launch(); }
