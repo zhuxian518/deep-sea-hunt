@@ -100,8 +100,8 @@
       880
     ],
     "speed": 1.05,
-    "fireRate": 1.05,
-    "dropChance": 0.2,
+    "fireRate": 1.1,
+    "dropChance": 0.24,
     "drops": [
       "rapid"
     ],
@@ -109,7 +109,13 @@
       "single": 0.4,
       "triple": 0.18,
       "tight": 0.55
-    }
+    },
+    "supplyCooldown": 14,
+    "supplyLimit": 2,
+    "firstAttack": 1.8,
+    "aimed": true,
+    "torpedoSpeed": 1.08,
+    "aimChance": 0.3
   },
   {
     "name": "三发一起来",
@@ -129,8 +135,8 @@
       900
     ],
     "speed": 1.1,
-    "fireRate": 1.12,
-    "dropChance": 0.24,
+    "fireRate": 1.27,
+    "dropChance": 0.26,
     "drops": [
       "rapid",
       "heavy"
@@ -139,7 +145,13 @@
       "single": 0.42,
       "triple": 0.18,
       "tight": 0.48
-    }
+    },
+    "supplyCooldown": 15,
+    "supplyLimit": 2,
+    "firstAttack": 1.6500000000000001,
+    "aimed": true,
+    "torpedoSpeed": 1.1500000000000001,
+    "aimChance": 0.44999999999999996
   },
   {
     "name": "深海交叉火力",
@@ -159,8 +171,8 @@
       1020
     ],
     "speed": 1.15,
-    "fireRate": 1.22,
-    "dropChance": 0.28,
+    "fireRate": 1.4400000000000002,
+    "dropChance": 0.27999999999999997,
     "drops": [
       "rapid",
       "heavy",
@@ -170,7 +182,13 @@
       "single": 0.44,
       "triple": 0.17,
       "tight": 0.42
-    }
+    },
+    "supplyCooldown": 16,
+    "supplyLimit": 3,
+    "firstAttack": 1.5,
+    "aimed": true,
+    "torpedoSpeed": 1.2200000000000002,
+    "aimChance": 0.6
   },
   {
     "name": "别停下来",
@@ -192,7 +210,7 @@
       1000
     ],
     "speed": 1.2,
-    "fireRate": 1.34,
+    "fireRate": 1.61,
     "dropChance": 0.3,
     "drops": [
       "rapid",
@@ -203,7 +221,13 @@
       "single": 0.46,
       "triple": 0.16,
       "tight": 0.36
-    }
+    },
+    "supplyCooldown": 17,
+    "supplyLimit": 3,
+    "firstAttack": 1.35,
+    "aimed": true,
+    "torpedoSpeed": 1.29,
+    "aimChance": 0.75
   },
   {
     "name": "最后的围猎",
@@ -226,7 +250,7 @@
       1040
     ],
     "speed": 1.25,
-    "fireRate": 1.48,
+    "fireRate": 1.7800000000000002,
     "dropChance": 0.32,
     "drops": [
       "rapid",
@@ -237,6 +261,12 @@
       "single": 0.48,
       "triple": 0.15,
       "tight": 0.3
-    }
+    },
+    "supplyCooldown": 18,
+    "supplyLimit": 3,
+    "firstAttack": 1.2000000000000002,
+    "aimed": true,
+    "torpedoSpeed": 1.36,
+    "aimChance": 0.8999999999999999
   }
 ]

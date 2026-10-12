@@ -1,17 +1,92 @@
 {
   "version": "mvp-2",
-  "world": { "width": 1000, "height": 1200, "waterline": 155 },
-  "player": { "speed": 440, "lives": 3, "invincible": 1.5, "halfW": 66, "halfH": 18 },
-  "bomb": { "speed": 300, "cooldown": 0.18, "max": 5, "radius": 9 },
-  "torpedo": { "speed": 220, "radius": 7 },
-  "explosion": { "radius": 95, "growth": 650, "lifetime": 0.3 },
-  "powerups": { "rapidDuration": 8, "heavyDuration": 8, "shieldDuration": 6, "speedMultiplier": 1.5, "blastMultiplier": 1.35, "riseSpeed": 110, "pickupLifetime": 14, "maxPickups": 4 },
-  "scoring": { "bonus": 0.5, "cap": 3, "depthMid": 500, "depthDeep": 800, "depthMidMultiplier": 1.25, "depthDeepMultiplier": 1.5 },
+  "world": {
+    "width": 1000,
+    "height": 1200,
+    "waterline": 155
+  },
+  "player": {
+    "speed": 440,
+    "lives": 3,
+    "invincible": 1.5,
+    "halfW": 66,
+    "halfH": 18
+  },
+  "bomb": {
+    "speed": 300,
+    "cooldown": 0.18,
+    "max": 3,
+    "radius": 9
+  },
+  "torpedo": {
+    "speed": 220,
+    "radius": 7
+  },
+  "explosion": {
+    "radius": 95,
+    "growth": 650,
+    "lifetime": 0.3
+  },
+  "powerups": {
+    "rapidDuration": 5,
+    "heavyDuration": 5,
+    "shieldDuration": 4,
+    "speedMultiplier": 1.25,
+    "blastMultiplier": 1.2,
+    "riseSpeed": 110,
+    "pickupLifetime": 14,
+    "maxPickups": 4
+  },
+  "scoring": {
+    "bonus": 0.5,
+    "cap": 3,
+    "depthMid": 500,
+    "depthDeep": 800,
+    "depthMidMultiplier": 1.25,
+    "depthDeepMultiplier": 1.5
+  },
   "enemies": {
-    "S01": { "speed": 140, "score": 100, "halfW": 51, "halfH": 18, "chainExplodable": true },
-    "S02": { "speed": 235, "score": 150, "halfW": 40, "halfH": 13, "chainExplodable": true },
-    "S03": { "speed": 120, "score": 180, "halfW": 57, "halfH": 22, "chainExplodable": true, "attackCooldown": 4.2 },
-    "S04": { "speed": 145, "score": 240, "halfW": 52, "halfH": 20, "chainExplodable": true, "attackCooldown": 4.5, "weapon": "homing", "torpedoSpeed": 235 },
-    "S05": { "speed": 105, "score": 300, "halfW": 64, "halfH": 24, "chainExplodable": true, "attackCooldown": 5.4, "weapon": "salvo", "torpedoSpeed": 220 }
+    "S01": {
+      "speed": 140,
+      "score": 100,
+      "halfW": 51,
+      "halfH": 18,
+      "chainExplodable": true
+    },
+    "S02": {
+      "speed": 235,
+      "score": 150,
+      "halfW": 40,
+      "halfH": 13,
+      "chainExplodable": true
+    },
+    "S03": {
+      "speed": 120,
+      "score": 180,
+      "halfW": 57,
+      "halfH": 22,
+      "chainExplodable": true,
+      "attackCooldown": 4.2
+    },
+    "S04": {
+      "speed": 145,
+      "score": 240,
+      "halfW": 52,
+      "halfH": 20,
+      "chainExplodable": true,
+      "attackCooldown": 4.5,
+      "weapon": "homing",
+      "torpedoSpeed": 235
+    },
+    "S05": {
+      "speed": 105,
+      "score": 300,
+      "halfW": 64,
+      "halfH": 24,
+      "chainExplodable": true,
+      "attackCooldown": 5.4,
+      "weapon": "salvo",
+      "torpedoSpeed": 220
+    }
   }
 }

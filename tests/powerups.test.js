@@ -19,7 +19,7 @@ test('seeded drops obey wave table and pool cap, never during warmup', () => {
   const warm = scene(); for (let i = 0; i < 100; i++) warm.dropPowerup({ x: 500, y: 500 }); assert.equal(warm.pickups.length, 0);
   const a = scene(5), b = scene(5);
   for (let i = 0; i < 100; i++) { a.dropPowerup({ x: 500, y: 700 }); b.dropPowerup({ x: 500, y: 700 }); }
-  assert.equal(a.pickups.length, 4); assert.ok(a.pickups.every(p => p.type === 'rapid')); assert.deepEqual(a.snapshot(), b.snapshot());
+  assert.equal(a.pickups.length, 1); assert.ok(a.pickups.every(p => p.type === 'rapid')); assert.deepEqual(a.snapshot(), b.snapshot());
 });
 test('pickup must reach surface and ship; missed pickups expire', () => {
   const s = scene(7); s.pickups.push({ id: 500, type: 'shield', x: 500, y: 400, px: 500, py: 400, age: 0 });
@@ -28,25 +28,25 @@ test('pickup must reach surface and ship; missed pickups expire', () => {
   s.pickups.push({ id: 501, type: 'heavy', x: 80, y: 400, px: 80, py: 400, age: 0 });
   step(s, 850); assert.equal(s.pickups.length, 0); assert.equal(s.buffs.heavy, 0);
 });
-test('buff refreshes duration without stacking, expires and resets on a fresh run', () => {
+test('buff does not refresh while active, expires and resets on a fresh run', () => {
   const s = scene(); s.grantPowerup('rapid'); step(s, 120); assert.ok(s.buffs.rapid < 6.01);
-  s.grantPowerup('rapid'); assert.equal(s.buffs.rapid, 8); step(s, 481); assert.equal(s.buffs.rapid, 0);
+  const remaining=s.buffs.rapid; s.grantPowerup('rapid'); assert.equal(s.buffs.rapid, remaining); step(s, 301); assert.equal(s.buffs.rapid, 0);
   s.grantPowerup('shield'); assert.deepEqual(scene().buffs, { rapid: 0, heavy: 0, shield: 0 });
 });
 test('speed and heavy buffs apply to fired bombs, without changing ammo count', () => {
   const s = scene(); s.grantPowerup('rapid'); s.grantPowerup('heavy'); step(s, 1, { fireHeld: true });
-  assert.equal(s.bombs[0].speed, 450); assert.equal(s.bombs[0].power, 1.35); assert.equal(s.shots, 1);
+  assert.equal(s.bombs[0].speed, config.bomb.speed*config.powerups.speedMultiplier); assert.equal(s.bombs[0].power, config.powerups.blastMultiplier); assert.equal(s.shots, 1);
   s.buffs.rapid = 0; s.buffs.heavy = 0; s.player.cooldown = 0; step(s, 1, { fireHeld: true });
   assert.equal(s.bombs[1].speed, 300); assert.equal(s.bombs[1].power, 1);
   const sub = s.addSub('S01', 300, 500); sub.vx = 0;
   s.kill(sub, { source: s.bombs[0], depth: 0 }); step(s, 17);
-  assert.ok(s.explosions.some(e => e.power === 1.35 && e.radius > 95));
+  assert.ok(s.explosions.some(e => e.power === config.powerups.blastMultiplier && e.radius > 95));
 });
 test('shield absorbs a hit, then expiration restores damage and invulnerability', () => {
   const s = scene(); const shot = () => ({ id: s.id++, x: 500, px: 500, y: 172, py: 172, alive: true });
   s.grantPowerup('shield'); s.torpedoes.push(shot()); s.step(1/60);
   assert.equal(s.player.lives, 3); assert.equal(s.torpedoes.length, 0); assert.ok(s.drainEvents().some(e => e.type === 'shield-hit'));
-  s.buffs.shield = 0; s.torpedoes.push(shot(), shot()); s.step(1/60);
+  assert.equal(s.buffs.shield,0); step(s,40); s.torpedoes.push(shot(), shot()); s.step(1/60);
   assert.equal(s.player.lives, 2); assert.ok(s.drainEvents().some(e => e.type === 'damage'));
 });
 test('hunter steers with a speed cap and locks direction near the surface', () => {
@@ -59,8 +59,29 @@ test('hunter steers with a speed cap and locks direction near the surface', () =
 test('salvo produces three distinct spread lanes with warning and bounded pool', () => {
   const s = scene(6); const sub = s.addSub('S05', 500, 800); sub.vx = 0; sub.attack = 0.5;
   step(s); assert.equal(sub.warning, true); sub.attack = 0; step(s);
-  assert.deepEqual(s.torpedoes.map(t => t.vx), [-65, 0, 65]); step(s, 10);
+  assert.equal(s.torpedoes[1].vx-s.torpedoes[0].vx,65); assert.equal(s.torpedoes[2].vx-s.torpedoes[1].vx,65); step(s, 10);
   assert.ok(s.torpedoes[0].x < 500 && s.torpedoes[2].x > 500);
   for (let i = 0; i < 20; i++) { const target = s.addSub('S05', 300 + i * 10, 800); target.vx = 0; target.attack = 0; }
   step(s); assert.equal(s.torpedoes.length, 35);
+});
+
+
+test('supplies cannot snowball from chains or bypass cooldown and wave budget',()=>{
+ const s=scene(7);s.waves=structuredClone(waves);s.waves[7].dropChance=1;
+ const chain={id:999,kills:0,score:0,depth:0};
+ for(let i=0;i<3;i++){const sub=s.addSub('S01',500,600);s.kill(sub,{chain,source:{id:999},depth:i});}
+ assert.equal(s.pickups.length,1);assert.equal(s.waveStats.supplyDrops,1);
+ s.pickups=[];s.dropPowerup({x:500,y:600});assert.equal(s.pickups.length,0);
+ s.waveTime=20;s.buffs.rapid=1;s.dropPowerup({x:500,y:600});assert.equal(s.pickups.length,0);
+ s.buffs.rapid=0;
+ for(let i=0;i<10;i++){s.waveTime+=20;s.dropPowerup({x:500,y:600});s.pickups=[];}
+ assert.equal(s.waveStats.supplyDrops,3);
+});
+
+test('late aimed shot threatens a stationary ship with warning before its first launch',()=>{
+ const s=scene(9);s.waves=structuredClone(waves);s.waves[9].aimChance=1;const sub=s.addSub('S03',200,700);sub.vx=0;
+ assert.ok(sub.attack>=.7);sub.attack=.6;step(s);assert.ok(sub.warning);
+ sub.attack=0;step(s);const t=s.torpedoes[0];assert.ok(t.vx>0);assert.ok(t.speed>config.torpedo.speed);
+ for(let i=0;i<200 && s.player.lives===3;i++)step(s);
+ assert.ok(s.player.lives<3);
 });

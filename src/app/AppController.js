@@ -98,7 +98,7 @@ export class AppController {
   }
   tutorial() {
     this.state = 'tutorial'; this.input.setEnabled(false);
-    this.panel('<div class="eyebrow">十几秒就能学会</div><h2>看准了再扔</h2><div class="tutorial-row"><b>← →</b><span>按住两边，船就会左右移动。<br>电脑用方向键或 A / D。</span></div><div class="tutorial-row"><b>↓</b><span>按住中间投弹，电脑按空格。<br>炸弹慢慢沉，记得往前一点扔。</span></div><div class="tutorial-row"><b>◎</b><span>潜艇凑近时，一炸就是一串。<br>红色鱼雷会往上冲，别被碰到。</span></div><button class="primary" data-action="launch">懂了，开炸！ →</button><button class="minor" data-action="home">回首页</button>', true);
+    this.panel('<div class="eyebrow">十几秒就能学会</div><h2>看准了再扔</h2><div class="tutorial-row"><b>← →</b><span>按住两边，船就会左右移动。<br>电脑用方向键或 A / D。</span></div><div class="tutorial-row"><b>↓</b><span>按住中间投弹，电脑按空格。<br>最多三颗同时在水里，记得留一颗。</span></div><div class="tutorial-row"><b>◎</b><span>潜艇凑近时，一炸就是一串。<br>红色鱼雷会往上冲，别被碰到。</span></div><button class="primary" data-action="launch">懂了，开炸！ →</button><button class="minor" data-action="home">回首页</button>', true);
   }
   launch(seed) {
     this.audio.unlock(); this.profile.tutorialSeen = true; this.persist();
@@ -211,11 +211,11 @@ export class AppController {
       el('score').textContent = digits(s ? s.score : 0); el('wave').textContent = String(s ? s.wave + 1 : 1).padStart(2, '0');
       const lives = s ? s.player.lives : 3;
       el('lives').textContent = Array.from({ length: 3 }, (_, i) => i < lives ? '▰' : '▱').join(' '); el('lives').setAttribute('aria-label', `剩余${lives}条生命`);
-      el('ammo').textContent = Array.from({ length: 5 }, (_, i) => i < 5 - (s ? s.bombs.length : 0) ? '●' : '○').join(' ');
+      el('ammo').textContent = Array.from({ length: config.bomb.max }, (_, i) => i < config.bomb.max - (s ? s.bombs.length : 0) ? '●' : '○').join(' ');
       el('mission-tag').textContent = s ? `第 ${s.wave + 1} 波 · ${waves[s.wave].name}` : '准备好就开炸';
-      el('status-text').textContent = s ? (s.bombs.length === 5 ? '五枚都在水里，稍等一下' : `这波 ${s.waveStats.shots} 雷 / ${s.waveStats.kills} 艘`) : '按住投弹，就能连着扔';
+      el('status-text').textContent = s ? (s.bombs.length >= config.bomb.max ? '三颗都在水里，等一下再投' : `这波 ${s.waveStats.shots} 雷 / ${s.waveStats.kills} 艘`) : '按住投弹，就能连着扔';
       el('combo-tag').textContent = s && s.maxCombo > 1 ? `最多 ${s.maxCombo} 连爆` : '';
-      const buffNames = { rapid: '水雷加速', heavy: '强化水雷', shield: '舰船护盾' };
+      const buffNames = { rapid: '水雷加速', heavy: '强化水雷', shield: '护盾·挡一次' };
       const active = s ? Object.keys(s.buffs).filter(type => s.buffs[type] > 0).map(type => `${buffNames[type]} ${Math.ceil(s.buffs[type])}秒`) : [];
       el('buff-status').textContent = active.join(' · '); el('buff-status').hidden = !active.length || !['game', 'paused'].includes(this.state);
       this.lastHud = signature;

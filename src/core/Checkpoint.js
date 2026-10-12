@@ -29,6 +29,8 @@ export function restoreCheckpoint(Simulation, config, waves, save) {
   }
   if (!s.buffs || !['rapid','heavy','shield'].every(k=>finite(s.buffs[k]) && s.buffs[k]>=0 && s.buffs[k]<=8)) throw Error('存档强化无效');
   if (!s.waveStats || !['shots','kills','points'].every(k=>integer(s.waveStats[k]))) throw Error('存档战报无效');
+  if (s.waveStats.supplyDrops !== undefined && (!integer(s.waveStats.supplyDrops) || s.waveStats.supplyDrops>100)) throw Error('存档补给无效');
+  if (s.waveStats.supplyReadyAt !== undefined && (!finite(s.waveStats.supplyReadyAt) || s.waveStats.supplyReadyAt<0 || s.waveStats.supplyReadyAt>300)) throw Error('存档补给时间无效');
   if (!Array.isArray(s.waveResults)||s.waveResults.length>waves.length||s.waveResults.some(r=>!integer(r.wave)||r.wave<1||r.wave>waves.length||!['shots','kills','points','bonus'].every(k=>integer(r[k]))||!finite(r.efficiency)||!finite(r.rate))) throw Error('存档奖励无效');
   if (!Array.isArray(s.chains)||s.chains.length>100||s.chains.some(c=>!['id','kills','score','depth'].every(k=>integer(c[k])))) throw Error('存档连爆无效');
   if (new Set(s.chains.map(c=>c.id)).size!==s.chains.length || s.explosions.some(e=>!integer(e.depth)||!s.chains.some(c=>c.id===e.chainId))) throw Error('存档连爆关联无效');
@@ -36,6 +38,8 @@ export function restoreCheckpoint(Simulation, config, waves, save) {
   const restored=new Simulation(config,waves,s.seed), copy=JSON.parse(JSON.stringify(s));
   for (const key of ['tick','elapsed','score','kills','maxCombo','escaped','shots','bonusTotal','wave','status','spawned','nextSpawn','waveTime','timer','reason','player','subs','bombs','torpedoes','pickups','buffs','waveStats','waveResults']) restored[key]=copy[key];
   restored.id=s.nextId; restored.eventId=s.eventId; restored.rng.state=s.random;
+  restored.bombs = restored.bombs.slice(0,config.bomb.max);
+  for (const type of ['rapid','heavy','shield']) restored.buffs[type] = Math.min(restored.buffs[type],config.powerups[type+'Duration']);
   restored.explosions=copy.explosions.map(e=>({...e,damaged:new Set(e.damaged)})); restored.chains=new Map(copy.chains.map(c=>[c.id,c])); restored.events=[];
   return restored;
 }

@@ -1,0 +1,366 @@
+{
+  "baseline": "8200a01",
+  "scope": "Real three-life simulations with firing and naturally collected supplies; fixed simple policies, not human play or certification",
+  "rows": [
+    {
+      "version": "previous",
+      "strategy": "stationary-fire",
+      "wave": 5,
+      "clearsOutOf20": 12,
+      "meanDamage": 2.05,
+      "meanBuffs": 0,
+      "meanKills": 13.95,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "previous",
+      "strategy": "stationary-fire",
+      "wave": 6,
+      "clearsOutOf20": 11,
+      "meanDamage": 2.25,
+      "meanBuffs": 2.55,
+      "meanKills": 16.5,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "previous",
+      "strategy": "stationary-fire",
+      "wave": 7,
+      "clearsOutOf20": 1,
+      "meanDamage": 2.95,
+      "meanBuffs": 2.3,
+      "meanKills": 15.25,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "previous",
+      "strategy": "stationary-fire",
+      "wave": 8,
+      "clearsOutOf20": 1,
+      "meanDamage": 2.95,
+      "meanBuffs": 1.3,
+      "meanKills": 10.35,
+      "shieldCoverage": 0.057
+    },
+    {
+      "version": "previous",
+      "strategy": "stationary-fire",
+      "wave": 9,
+      "clearsOutOf20": 0,
+      "meanDamage": 3,
+      "meanBuffs": 1.45,
+      "meanKills": 8.15,
+      "shieldCoverage": 0.155
+    },
+    {
+      "version": "previous",
+      "strategy": "stationary-fire",
+      "wave": 10,
+      "clearsOutOf20": 0,
+      "meanDamage": 3,
+      "meanBuffs": 0.85,
+      "meanKills": 6.45,
+      "shieldCoverage": 0.034
+    },
+    {
+      "version": "previous",
+      "strategy": "sweep-fire",
+      "wave": 5,
+      "clearsOutOf20": 19,
+      "meanDamage": 0.95,
+      "meanBuffs": 0,
+      "meanKills": 16.2,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "previous",
+      "strategy": "sweep-fire",
+      "wave": 6,
+      "clearsOutOf20": 20,
+      "meanDamage": 0.8,
+      "meanBuffs": 4.25,
+      "meanKills": 21.3,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "previous",
+      "strategy": "sweep-fire",
+      "wave": 7,
+      "clearsOutOf20": 16,
+      "meanDamage": 1.6,
+      "meanBuffs": 5.6,
+      "meanKills": 24.2,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "previous",
+      "strategy": "sweep-fire",
+      "wave": 8,
+      "clearsOutOf20": 10,
+      "meanDamage": 2.25,
+      "meanBuffs": 5.85,
+      "meanKills": 24.8,
+      "shieldCoverage": 0.21
+    },
+    {
+      "version": "previous",
+      "strategy": "sweep-fire",
+      "wave": 9,
+      "clearsOutOf20": 9,
+      "meanDamage": 2.4,
+      "meanBuffs": 7.45,
+      "meanKills": 27.3,
+      "shieldCoverage": 0.217
+    },
+    {
+      "version": "previous",
+      "strategy": "sweep-fire",
+      "wave": 10,
+      "clearsOutOf20": 2,
+      "meanDamage": 2.8,
+      "meanBuffs": 6.45,
+      "meanKills": 23.3,
+      "shieldCoverage": 0.25
+    },
+    {
+      "version": "previous",
+      "strategy": "reactive-fire",
+      "wave": 5,
+      "clearsOutOf20": 20,
+      "meanDamage": 0,
+      "meanBuffs": 0,
+      "meanKills": 16.1,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "previous",
+      "strategy": "reactive-fire",
+      "wave": 6,
+      "clearsOutOf20": 20,
+      "meanDamage": 0,
+      "meanBuffs": 4,
+      "meanKills": 21.25,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "previous",
+      "strategy": "reactive-fire",
+      "wave": 7,
+      "clearsOutOf20": 20,
+      "meanDamage": 0,
+      "meanBuffs": 5.5,
+      "meanKills": 24.15,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "previous",
+      "strategy": "reactive-fire",
+      "wave": 8,
+      "clearsOutOf20": 20,
+      "meanDamage": 0.25,
+      "meanBuffs": 7.15,
+      "meanKills": 28.4,
+      "shieldCoverage": 0.201
+    },
+    {
+      "version": "previous",
+      "strategy": "reactive-fire",
+      "wave": 9,
+      "clearsOutOf20": 20,
+      "meanDamage": 0.15,
+      "meanBuffs": 9.3,
+      "meanKills": 32.4,
+      "shieldCoverage": 0.225
+    },
+    {
+      "version": "previous",
+      "strategy": "reactive-fire",
+      "wave": 10,
+      "clearsOutOf20": 20,
+      "meanDamage": 0.15,
+      "meanBuffs": 11.65,
+      "meanKills": 40.1,
+      "shieldCoverage": 0.273
+    },
+    {
+      "version": "revised",
+      "strategy": "stationary-fire",
+      "wave": 5,
+      "clearsOutOf20": 3,
+      "meanDamage": 2.85,
+      "meanBuffs": 0,
+      "meanKills": 10.1,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "revised",
+      "strategy": "stationary-fire",
+      "wave": 6,
+      "clearsOutOf20": 0,
+      "meanDamage": 3,
+      "meanBuffs": 0.7,
+      "meanKills": 8.2,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "revised",
+      "strategy": "stationary-fire",
+      "wave": 7,
+      "clearsOutOf20": 0,
+      "meanDamage": 3,
+      "meanBuffs": 0.65,
+      "meanKills": 5.3,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "revised",
+      "strategy": "stationary-fire",
+      "wave": 8,
+      "clearsOutOf20": 0,
+      "meanDamage": 3,
+      "meanBuffs": 0.4,
+      "meanKills": 4.45,
+      "shieldCoverage": 0.012
+    },
+    {
+      "version": "revised",
+      "strategy": "stationary-fire",
+      "wave": 9,
+      "clearsOutOf20": 0,
+      "meanDamage": 3,
+      "meanBuffs": 0.25,
+      "meanKills": 3.35,
+      "shieldCoverage": 0.02
+    },
+    {
+      "version": "revised",
+      "strategy": "stationary-fire",
+      "wave": 10,
+      "clearsOutOf20": 0,
+      "meanDamage": 3,
+      "meanBuffs": 0.25,
+      "meanKills": 3.05,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "revised",
+      "strategy": "sweep-fire",
+      "wave": 5,
+      "clearsOutOf20": 17,
+      "meanDamage": 1.55,
+      "meanBuffs": 0,
+      "meanKills": 13.9,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "revised",
+      "strategy": "sweep-fire",
+      "wave": 6,
+      "clearsOutOf20": 10,
+      "meanDamage": 2.3,
+      "meanBuffs": 1.25,
+      "meanKills": 14.45,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "revised",
+      "strategy": "sweep-fire",
+      "wave": 7,
+      "clearsOutOf20": 0,
+      "meanDamage": 3,
+      "meanBuffs": 1,
+      "meanKills": 9.9,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "revised",
+      "strategy": "sweep-fire",
+      "wave": 8,
+      "clearsOutOf20": 1,
+      "meanDamage": 2.95,
+      "meanBuffs": 0.75,
+      "meanKills": 9.5,
+      "shieldCoverage": 0.007
+    },
+    {
+      "version": "revised",
+      "strategy": "sweep-fire",
+      "wave": 9,
+      "clearsOutOf20": 0,
+      "meanDamage": 3,
+      "meanBuffs": 0.45,
+      "meanKills": 6.7,
+      "shieldCoverage": 0.023
+    },
+    {
+      "version": "revised",
+      "strategy": "sweep-fire",
+      "wave": 10,
+      "clearsOutOf20": 0,
+      "meanDamage": 3,
+      "meanBuffs": 0.6,
+      "meanKills": 8.3,
+      "shieldCoverage": 0.013
+    },
+    {
+      "version": "revised",
+      "strategy": "reactive-fire",
+      "wave": 5,
+      "clearsOutOf20": 20,
+      "meanDamage": 0,
+      "meanBuffs": 0,
+      "meanKills": 13.85,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "revised",
+      "strategy": "reactive-fire",
+      "wave": 6,
+      "clearsOutOf20": 20,
+      "meanDamage": 0,
+      "meanBuffs": 1.4,
+      "meanKills": 16.85,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "revised",
+      "strategy": "reactive-fire",
+      "wave": 7,
+      "clearsOutOf20": 20,
+      "meanDamage": 0.1,
+      "meanBuffs": 1.65,
+      "meanKills": 19.3,
+      "shieldCoverage": 0
+    },
+    {
+      "version": "revised",
+      "strategy": "reactive-fire",
+      "wave": 8,
+      "clearsOutOf20": 20,
+      "meanDamage": 0.2,
+      "meanBuffs": 1.95,
+      "meanKills": 20.3,
+      "shieldCoverage": 0.03
+    },
+    {
+      "version": "revised",
+      "strategy": "reactive-fire",
+      "wave": 9,
+      "clearsOutOf20": 20,
+      "meanDamage": 0.4,
+      "meanBuffs": 2.1,
+      "meanKills": 24.05,
+      "shieldCoverage": 0.039
+    },
+    {
+      "version": "revised",
+      "strategy": "reactive-fire",
+      "wave": 10,
+      "clearsOutOf20": 19,
+      "meanDamage": 0.75,
+      "meanBuffs": 2.15,
+      "meanKills": 27.15,
+      "shieldCoverage": 0.043
+    }
+  ]
+}

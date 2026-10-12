@@ -23,6 +23,9 @@ export function validateConfig(config, waves) {
     if (!wave.depths.length || wave.depths.some(d => d < config.world.waterline + 80 || d > config.world.height - 80)) throw new Error('深度配置无效');
     if (wave.dropChance !== undefined && (!Number.isFinite(wave.dropChance) || wave.dropChance < 0 || wave.dropChance > 1 || !wave.drops || !wave.drops.length || wave.drops.some(type => !['rapid', 'heavy', 'shield'].includes(type)))) throw new Error('补给配置无效');
     if (wave.encounters && (['single', 'triple', 'tight'].some(k => !Number.isFinite(wave.encounters[k]) || wave.encounters[k] < 0 || wave.encounters[k] > 1) || wave.encounters.single + wave.encounters.triple > 1)) throw new Error('编队配置无效');
+    for (const key of ['supplyCooldown','supplyLimit','firstAttack','torpedoSpeed','fireRate']) if (wave[key] !== undefined && !positive(wave[key])) throw new Error('难度配置无效');
+    if (wave.supplyLimit !== undefined && !Number.isInteger(wave.supplyLimit)) throw new Error('补给上限无效');
+    if (wave.aimChance !== undefined && (!Number.isFinite(wave.aimChance) || wave.aimChance<0 || wave.aimChance>1)) throw new Error('瞄准概率无效');
   }
 }
 
@@ -49,18 +52,23 @@ export class Simulation {
   }
   grantPowerup(type) {
     if (!Object.prototype.hasOwnProperty.call(this.buffs, type)) return;
+    if (this.buffs[type] > 0) return;
     this.buffs[type] = this.config.powerups[type + 'Duration'];
     this.emit('powerup', { powerup: type, duration: this.buffs[type] });
   }
   dropPowerup(sub) {
     const wave = this.waves[this.wave];
+    if (wave.supplyLimit && ((this.waveStats.supplyDrops || 0) >= wave.supplyLimit || this.waveTime < (this.waveStats.supplyReadyAt || 0) || this.pickups.length || Object.keys(this.buffs).some(type => this.buffs[type] > 0))) return;
     if (!wave.dropChance || this.pickups.length >= this.config.powerups.maxPickups || this.rng.next() >= wave.dropChance) return;
     const type = wave.drops[Math.floor(this.rng.next() * wave.drops.length)];
     this.pickups.push({ id: this.id++, type, x: clamp(sub.x, 80, this.config.world.width - 80), y: sub.y, px: clamp(sub.x, 80, this.config.world.width - 80), py: sub.y, age: 0 });
+    this.waveStats.supplyDrops = (this.waveStats.supplyDrops || 0) + 1;
+    this.waveStats.supplyReadyAt = this.waveTime + (wave.supplyCooldown || 0);
   }
   addSub(typeId, x, y, direction = 1, speed = 1) {
     const def = this.config.enemies[typeId];
     const sub = { id: this.id++, typeId, x, y, px: x, py: y, vx: direction * def.speed * speed, halfW: def.halfW, halfH: def.halfH, alive: true, attack: (def.attackCooldown || 1000) * (0.65 + this.rng.next() * 0.35) / (this.waves[this.wave].fireRate || 1), warning: false };
+    if (def.attackCooldown && this.waves[this.wave].firstAttack) sub.attack = this.waves[this.wave].firstAttack * (0.9 + this.rng.next() * 0.2);
     this.subs.push(sub); return sub;
   }
   spawn() {
@@ -96,7 +104,7 @@ export class Simulation {
     this.score += points; this.kills++; chain.kills++; chain.score += points; chain.depth = Math.max(chain.depth, depth);
     this.maxCombo = Math.max(this.maxCombo, chain.kills);
     this.emit('kill', { x: sub.x, y: sub.y, points, depth, combo: chain.kills, chainId: chain.id });
-    this.dropPowerup(sub);
+    if (!chain.supplyRolled) { chain.supplyRolled = true; this.dropPowerup(sub); }
     if (def.chainExplodable) {
       this.explosions.push({ id: this.id++, x: sub.x, y: sub.y, radius: 0, age: 0, chainId: chain.id, depth, power: cause.source.power || 1, damaged: new Set() });
     }
@@ -140,8 +148,10 @@ export class Simulation {
       if (def.attackCooldown && sub.x > 65 && sub.x < c.world.width - 65) {
         sub.attack -= dt; sub.warning = sub.attack < 0.7;
         if (sub.attack <= 0) {
+          const wave = this.waves[this.wave], speed = (def.torpedoSpeed || c.torpedo.speed) * (wave.torpedoSpeed || 1);
+          const aim = wave.aimed && def.weapon !== 'homing' && this.rng.next() < (wave.aimChance === undefined ? 1 : wave.aimChance) ? clamp((p.x-sub.x) / Math.max(0.5,(sub.y-p.y)/speed),-180,180) : 0;
           const lanes = def.weapon === 'salvo' ? [-65, 0, 65] : [0];
-          for (const vx of lanes) if (this.torpedoes.length + newTorpedoes.length < 35) newTorpedoes.push({ id: this.id++, x: sub.x, y: sub.y - 24, px: sub.x, py: sub.y - 24, alive: true, vx, speed: def.torpedoSpeed || c.torpedo.speed, homing: def.weapon === 'homing' });
+          for (const lane of lanes) if (this.torpedoes.length + newTorpedoes.length < 35) newTorpedoes.push({ id: this.id++, x: sub.x, y: sub.y - 24, px: sub.x, py: sub.y - 24, alive: true, vx: aim + lane, speed, homing: def.weapon === 'homing' });
           sub.attack = def.attackCooldown / (this.waves[this.wave].fireRate || 1); sub.warning = false; this.emit('torpedo', { x: sub.x, y: sub.y });
         }
       }
@@ -179,7 +189,7 @@ export class Simulation {
     const playerHits = this.torpedoes.map(t => ({ t, time: sweptHit(t, p, c.torpedo.radius) })).filter(h => h.time !== null).sort((a, b) => a.time - b.time || a.t.id - b.t.id);
     for (const hit of playerHits) {
       hit.t.alive = false;
-      if (this.buffs.shield > 0) { this.emit('shield-hit', { x: p.x, y: p.y }); continue; }
+      if (this.buffs.shield > 0) { this.buffs.shield = 0; p.invincible = Math.max(p.invincible,0.6); this.emit('shield-hit', { x: p.x, y: p.y }); continue; }
       if (p.invincible > 0) continue;
       p.lives--; p.invincible = c.player.invincible; this.emit('damage', { x: p.x, y: p.y });
       if (p.lives <= 0) { this.end('被鱼雷击中了'); break; }

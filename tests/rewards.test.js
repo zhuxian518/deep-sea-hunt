@@ -19,10 +19,10 @@ test('efficiency tiers reward fewer bombs, with safe empty and miss cases', () =
     const r = efficiencyReward(shots, kills, 999); assert.equal(r.rate, rate); assert.equal(r.bonus, Math.floor(999 * rate));
   }
 });
-test('actual emissions count shots, blocked cooldown and five-bomb cap do not', () => {
+test('actual emissions count shots, blocked cooldown and three-bomb cap do not', () => {
   const s = new Simulation(config, waves); s.status = 'playing';
   for (let i = 0; i < 100; i++) s.step(1/60, { fireHeld: true });
-  assert.equal(s.shots, 5); assert.equal(s.waveStats.shots, 5);
+  assert.equal(s.shots, config.bomb.max); assert.equal(s.waveStats.shots, config.bomb.max);
 });
 test('last wave settles after explosions, exactly once, before final score', () => {
   const s = new Simulation(config, waves); s.wave = waves.length - 1; s.setupWave(); s.status = 'playing'; s.spawned = waves[s.wave].count;

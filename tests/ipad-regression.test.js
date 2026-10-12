@@ -51,3 +51,13 @@ test('WebKit interrupted context resumes and primes output; running gestures do 
   try {const mixer=new AudioMixer();mixer.context=c;mixer.unlock();assert.equal(resumes,1);assert.equal(starts,1);assert.equal(window.navigator.audioSession.type,'playback');c.state='running';mixer.unlock();assert.equal(sources,1);}
   finally {globalThis.window=previous;}
 });
+
+test('legacy five-bomb save migrates to three slots and current buff durations',()=>{
+  const s=new Simulation(config,waves,123);s.status='playing';
+  for(let i=0;i<5;i++)s.bombs.push({id:s.id++,x:500,y:200+i*40,px:500,py:200+i*40,alive:true});
+  s.buffs={rapid:8,heavy:8,shield:6};
+  const restored=restoreCheckpoint(Simulation,config,waves,{version:1,balanceVersion:config.version,state:s.snapshot()});
+  assert.equal(restored.bombs.length,3);assert.deepEqual(restored.buffs,{rapid:5,heavy:5,shield:4});
+  for(let i=0;i<20;i++)restored.step(1/60,{fireHeld:true});
+  assert.equal(restored.shots,0);
+});

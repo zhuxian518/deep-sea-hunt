@@ -27,14 +27,14 @@ test('player clamps at both borders', () => {
   advance(sim, 300, { moveAxis: -1 }); assert.equal(sim.player.x, 80);
   advance(sim, 300, { moveAxis: 1 }); assert.equal(sim.player.x, 920);
 });
-test('held fire respects cooldown and five-bomb cap', () => {
+test('held fire respects cooldown and three-bomb cap', () => {
   const sim = new Simulation(balance, waves); sim.status = 'playing';
-  advance(sim, 120, { fireHeld: true }); assert.equal(sim.bombs.length, 5);
+  advance(sim, 120, { fireHeld: true }); assert.equal(sim.bombs.length, balance.bomb.max);
   const events = advance(sim, 30, { fireHeld: true }); assert.equal(events.filter(e => e.type === 'bomb').length, 0);
 });
 test('live bombs eventually recycle and can be fired again', () => {
   const sim = isolated(); stationary(sim, 900, 1100); advance(sim, 360, { fireHeld: true });
-  assert.ok(sim.bombs.length <= 5); assert.ok(sim.id > 10);
+  assert.ok(sim.bombs.length <= balance.bomb.max); assert.ok(sim.shots > balance.bomb.max);
 });
 test('swept projectile catches high-speed crossing and relative ship movement', () => {
   const target = { x: 500, px: 500, y: 147, py: 147, halfW: 66, halfH: 18 };
@@ -140,7 +140,7 @@ test('20 simulated minutes of repeat games keep entity collections bounded', () 
   let sim = new Simulation(cfg, waves, 55), runs = 1;
   for (let i = 0; i < 60 * 1200; i++) {
     sim.step(dt, { moveAxis: i % 240 < 120 ? 1 : -1, fireHeld: true }); sim.drainEvents();
-    assert.ok(sim.subs.length < 30 && sim.bombs.length <= 5 && sim.torpedoes.length <= 35 && sim.explosions.length < 30 && sim.chains.size < 30 && sim.pickups.length <= 4);
+    assert.ok(sim.subs.length < 30 && sim.bombs.length <= balance.bomb.max && sim.torpedoes.length <= 35 && sim.explosions.length < 30 && sim.chains.size < 30 && sim.pickups.length <= 4);
     if (sim.status === 'ended') { runs++; sim = new Simulation(cfg, waves, 55 + runs); }
   }
   assert.ok(runs >= 3);
