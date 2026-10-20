@@ -1,6 +1,6 @@
 # 开发与维护指南
 
-本项目为私有仓库，供已获授权的维护者开发。开始前阅读 [AGENTS.md](AGENTS.md)、[README](README.md) 和 [文档索引](docs/README.md)。
+本项目现为公开仓库，但没有授予开源许可；查阅、提出问题与获得代码/素材复用授权是不同事项。开始前阅读 [AGENTS.md](AGENTS.md)、[README](README.md) 、[架构导航](docs/ARCHITECTURE.md) 和 [文档索引](docs/README.md)。
 
 ## 环境与日常操作
 

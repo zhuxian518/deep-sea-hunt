@@ -7,4 +7,4 @@
 - 平台原生存储9.46+、评论草稿9.49+均需版本与方法检查；分享/评论由用户明确点击，不伪称已发布。已取得用户提供的官方 minitool-zip-builder 1.7.0 下载口令；用户于2026-10-12明确确认官方审核已通过，当前正式版本为1.0.0，事实与冻结内容见 docs/release/v1.0.0.md 和 v1.0.0-manifest.json。审核与静态校验均不能替代三类手机验收，不得宣称全机型支持。
 - 验证：npm test；npm run package；node scripts/verify-package.mjs。浏览器脚本用开发构建诊断接口，结束恢复正式构建。按改动范围验证，不重复无关测试。
 - 文档、截图及发布正文在 docs/promotion。构造的战斗场景和示例分数必须标注演示。release、dist为重建产物；node_modules、浏览器会话、凭据不入库。
-- GitHub私有仓库 zhuxian518/deep-sea-hunt；main稳定集成，正式标签v1.0.0固定且不改指，候选标签保留历史。按 docs/release/RELEASING.md 升级；源码在Git、产物在私有Release归档。提供Actions模板，未授权workflow scope时不要改动账号授权。
+- GitHub公开仓库 zhuxian518/deep-sea-hunt（2026-10-20核对；未改变授权）；main稳定集成，正式标签v1.0.0固定且不改指，候选标签保留历史。按 docs/release/RELEASING.md 升级；源码在Git、产物在GitHub Release归档。提供Actions模板，未授权workflow scope时不要改动账号授权。

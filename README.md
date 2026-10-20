@@ -32,7 +32,7 @@
 
 ## 快速开始
 
-开发环境使用 **Node.js 22 或更新版本**及 npm。运行游戏只需要浏览器；构建工具不进入正式包。首次克隆私有仓库需要已有的 GitHub 访问权限。
+开发环境使用 **Node.js 22 或更新版本**及 npm。运行游戏只需要浏览器；构建工具不进入正式包。仓库当前公开可读；公开可见不改变项目原有授权边界。
 
 ```sh
 git clone https://github.com/zhuxian518/deep-sea-hunt.git
@@ -67,7 +67,7 @@ node .codex/skills/minitool-zip-builder/scripts/audit_artifact.mjs dist
 python .codex/skills/minitool-zip-builder/scripts/audit_artifact.py release/深海较量-v1.0.0.zip
 ```
 
-`npm run package` 构建、检查离线规则并生成下列文件。正式附件在[私有仓库 Releases](https://github.com/zhuxian518/deep-sea-hunt/releases/tag/v1.0.0)，需要仓库访问权限。
+`npm run package` 构建、检查离线规则并生成下列文件。正式附件在[GitHub Releases](https://github.com/zhuxian518/deep-sea-hunt/releases/tag/v1.0.0)，可按附件用途下载。
 
 | 文件 | 用途 |
 | --- | --- |
@@ -107,6 +107,7 @@ docs/           设计、实施记录、测试、素材和发布文档
 | --- | --- |
 | [更新日志](CHANGELOG.md) | 对玩家有影响的版本变更 |
 | [开发指南](CONTRIBUTING.md) | 环境、修改入口、测试和分支约定 |
+| [当前架构导航](docs/ARCHITECTURE.md) | 实际模块、模拟/渲染边界、存储和交付 |
 | [发布流程](docs/release/RELEASING.md) | 版本冻结、验证、归档、升级与回退 |
 | [1.0.0 发布记录](docs/release/v1.0.0.md) | 审核来源、正式范围和验证结果 |
 | [版本内容清单](docs/release/v1.0.0-manifest.json) | 正式运行文件的SHA-256，用于比对冻结内容 |
@@ -118,6 +119,6 @@ docs/           设计、实施记录、测试、素材和发布文档
 
 ## 维护与授权
 
-[zhuxian518/deep-sea-hunt](https://github.com/zhuxian518/deep-sea-hunt) 为私有项目，未授予开源许可。游戏画面、音乐、音效由本项目绘制或合成，未使用原作图片、音乐或代码；正式图标的生成来源见[品牌素材说明](docs/branding/README.md)。开发依赖及随附 Skill 遵循各自许可声明。
+[zhuxian518/deep-sea-hunt](https://github.com/zhuxian518/deep-sea-hunt) 当前为公开仓库，未授予开源许可；公开可见不等于可自由复制分发或商业复用。游戏画面、音乐、音效由本项目绘制或合成，未使用原作图片、音乐或代码；正式图标的生成来源见[品牌素材说明](docs/branding/README.md)。开发依赖及随附 Skill 遵循各自许可声明。
 
 `main` 用于稳定集成，后续修改使用 `codex/` 功能分支。`v1.0.0` 固定，不随以后提交移动。GitHub Actions 配置以[模板](docs/release/validate-workflow.example.yml)保存，尚未启用，不显示虚假的CI通过徽章。
